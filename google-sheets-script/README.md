@@ -5,7 +5,9 @@ This repository tracks the development of a multi-phased automation pipeline.
 ## Project Structure
 
 - **[A] Google Sheets + Apps Script:** Background email automation triggered by form inputs. (Status: Completed)
-- **[B] Telegram Bot:** To-do list and note management utility. (Status: Pending)
+
+* **[B] Telegram Bot:** To-do list and note management utility. (Status: Completed)
+
 - **[C] Full Stack:** E-commerce/Student resource platform with cinematic UI. (Status: Pending)
 
 ## Phase 1: Google Sheets Automation [A]
