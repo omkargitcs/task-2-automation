@@ -8,6 +8,7 @@ export default function Home() {
   const [routes, setRoutes] = useState([]);
 
   // FETCH PIPELINE: Syncs live data directly from Neon PostgreSQL on page load
+  // FETCH PIPELINE: Syncs live data directly from Neon PostgreSQL on page load
   useEffect(() => {
     const fetchSavedRoutes = async () => {
       try {
@@ -20,6 +21,8 @@ export default function Home() {
         setRoutes([]);
       }
     };
+
+    fetchSavedRoutes(); // <-- THIS INVOKES THE FETCH AUTOMATICALLY
   }, []);
 
   const handleInitializeRoute = async (e) => {
