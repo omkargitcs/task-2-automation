@@ -46,6 +46,18 @@ export default function Home() {
     }
   };
 
+  const totalRoutes = routes.length;
+  const totalTriviaDiscovered = routes.reduce(
+    (acc, curr) => acc + (curr.trivia ? curr.trivia.length : 0),
+    0,
+  );
+  const civicRank =
+    total > 4
+      ? "ELITE URBANIST"
+      : totalRoutes > 1
+        ? "Local Explorer "
+        : "Novice Transit Cartographer";
+
   // Static mockup data simulating our database outputs
 
   return (
@@ -69,102 +81,139 @@ export default function Home() {
 
       {/* Main Body Grid */}
       <main className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Input Form (35% width on large screens) */}
-        <section className="lg:col-span-4 bg-[#111111] border border-[#1f1f1f] rounded-xl p-6 h-fit sticky top-24">
-          <h2 className="text-xl font-bold mb-2 tracking-tight text-white">
-            Create New Journey
-          </h2>
-          <p className="text-sm text-gray-400 mb-6">
-            Input your regular transit nodes to extract localized historic data
-            points.
-          </p>
-
-          <form className="space-y-4" onSubmit={handleInitializeRoute}>
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5 font-mono">
-                Route Identifier Name
-              </label>
-              <input
-                type="text"
-                value={routeName}
-                onChange={(e) => setRouteName(e.target.value)}
-                placeholder="e.g., Daily College Route"
-                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-red-600 transition"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5 font-mono">
-                Transit Milestones & Locations
-              </label>
-              <textarea
-                rows="3"
-                value={milestones}
-                onChange={(e) => setMilestones(e.target.value)}
-                placeholder="e.g., Churchgate, Marine Drive, Bandra (separated by commas)"
-                className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-red-600 transition resize-none"
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-3 rounded-lg transition shadow-lg shadow-red-900/20 active:scale-[0.99]"
-            >
-              Initialize Route Processing Engine
-            </button>
-          </form>
-        </section>
-
-        {/* Right Column: Output Grid View (65% width on large screens) */}
-        <section className="lg:col-span-8 space-y-6">
-          <div className="flex items-center justify-between border-b border-[#1f1f1f] pb-3">
-            <h2 className="text-xl font-bold tracking-tight text-white">
-              Your Monitored Urban Paths
-            </h2>
-            <span className="text-xs bg-red-950/40 text-red-400 border border-red-900/50 px-2.5 py-1 rounded-full font-mono">
-              {routes.length} Tracks Active
+        <section className="grid grid-cols-1 md:grid-cols-3 ga-4">
+          <div className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5 flex flex-col justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-gray-500">
+              Total Commutes Tracked
+            </span>
+            <span className="text-3xl font-black mt-2 text-white">
+              {totalRoutes}
+              <span className="text-sm font-normal text-gray-500">Paths</span>
             </span>
           </div>
 
-          {/* Map Loop Rendering the Premium Grid Rows */}
-          <div className="grid grid-cols-1 gap-6">
-            {routes.map((route) => (
-              <div
-                key={route.id}
-                className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-6 hover:border-[#2e2e2e] transition"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                  <h3 className="text-lg font-bold text-white tracking-tight">
-                    {route.name}
-                  </h3>
-                  <span className="text-xs font-mono text-gray-500 bg-[#1c1c1c] px-3 py-1 rounded-md border border-[#262626]">
-                    {route.path}
-                  </span>
-                </div>
-
-                <div className="space-y-3 border-t border-[#1a1a1a] pt-4">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-red-500 font-mono">
-                    Extracted Civic & Historical Insights:
-                  </h4>
-                  <ul className="space-y-2">
-                    {route.trivia.map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="text-sm text-gray-300 flex items-start space-x-2.5 leading-relaxed"
-                      >
-                        <span className="text-red-600 mt-1 flex-shrink-0">
-                          ✦
-                        </span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            ))}
+          <div className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5 flex flex-col justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-gray-500">
+              Historical Facts Unlocked
+            </span>
+            <span className="text-3xl font-black mt-2 text-red-500">
+              {totalTriviaDiscovered}
+              <span className="text-sm font-norml text-gray-500">
+                Data Points
+              </span>
+            </span>
+          </div>
+          <div className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-5 flex flex-col justify-between">
+            <span className="text-xs font-mono uppercase tracking-wider text-gray-500">
+              Explorer Citizenship Standing
+            </span>
+            <span className="text-lg font-bold mt-2 text-green-400 tracking-tight">
+              {civicRank}
+            </span>
           </div>
         </section>
+
+        {/* ;AYPUT DIVIDER*/}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column: Input Form (35% width on large screens) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8"></div>
+
+          <section className="lg:col-span-4 bg-[#111111] border border-[#1f1f1f] rounded-xl p-6 h-fit sticky top-24">
+            <h2 className="text-xl font-bold mb-2 tracking-tight text-white">
+              Create New Journey
+            </h2>
+            <p className="text-sm text-gray-400 mb-6">
+              Input your regular transit nodes to extract localized historic
+              data points.
+            </p>
+
+            <form className="space-y-4" onSubmit={handleInitializeRoute}>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5 font-mono">
+                  Route Identifier Name
+                </label>
+                <input
+                  type="text"
+                  value={routeName}
+                  onChange={(e) => setRouteName(e.target.value)}
+                  placeholder="e.g., Daily College Route"
+                  className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-red-600 transition"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5 font-mono">
+                  Transit Milestones & Locations
+                </label>
+                <textarea
+                  rows="3"
+                  value={milestones}
+                  onChange={(e) => setMilestones(e.target.value)}
+                  placeholder="e.g., Churchgate, Marine Drive, Bandra (separated by commas)"
+                  className="w-full bg-[#1c1c1c] border border-[#2e2e2e] rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-red-600 transition resize-none"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-3 rounded-lg transition shadow-lg shadow-red-900/20 active:scale-[0.99]"
+              >
+                Initialize Route Processing Engine
+              </button>
+            </form>
+          </section>
+
+          {/* Right Column: Output Grid View (65% width on large screens) */}
+          <section className="lg:col-span-8 space-y-6">
+            <div className="flex items-center justify-between border-b border-[#1f1f1f] pb-3">
+              <h2 className="text-xl font-bold tracking-tight text-white">
+                Your Monitored Urban Paths
+              </h2>
+              <span className="text-xs bg-red-950/40 text-red-400 border border-red-900/50 px-2.5 py-1 rounded-full font-mono">
+                {routes.length} Tracks Active
+              </span>
+            </div>
+
+            {/* Map Loop Rendering the Premium Grid Rows */}
+            <div className="grid grid-cols-1 gap-6">
+              {routes.map((route) => (
+                <div
+                  key={route.id}
+                  className="bg-[#111111] border border-[#1f1f1f] rounded-xl p-6 hover:border-[#2e2e2e] transition"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                    <h3 className="text-lg font-bold text-white tracking-tight">
+                      {route.name}
+                    </h3>
+                    <span className="text-xs font-mono text-gray-500 bg-[#1c1c1c] px-3 py-1 rounded-md border border-[#262626]">
+                      {route.path}
+                    </span>
+                  </div>
+
+                  <div className="space-y-3 border-t border-[#1a1a1a] pt-4">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-red-500 font-mono">
+                      Extracted Civic & Historical Insights:
+                    </h4>
+                    <ul className="space-y-2">
+                      {route.trivia.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="text-sm text-gray-300 flex items-start space-x-2.5 leading-relaxed"
+                        >
+                          <span className="text-red-600 mt-1 flex-shrink-0">
+                            ✦
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </main>
     </div>
   );
