@@ -52,7 +52,7 @@ export default function Home() {
     0,
   );
   const civicRank =
-    total > 4
+    totalRoutes > 4
       ? "ELITE URBANIST"
       : totalRoutes > 1
         ? "Local Explorer "
