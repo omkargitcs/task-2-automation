@@ -201,7 +201,7 @@ export default function Home() {
 
                       {/* GLOWING RECTANGLE TRANSIT GRAPH BADGES */}
                       <div className="flex flex-wrap gap-1.5 items-center">
-                        {route.path.split(/➔|->/).map((node, i) => (
+                        {route.path.split("->").map((node, i) => (
                           <span
                             key={i}
                             className="text-[11px] font-mono font-medium text-gray-300 bg-[#1c1c1c] px-2.5 py-1 rounded border border-[#2e2e2e] hover:border-red-600 transition"
