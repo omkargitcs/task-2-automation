@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 
+// 🌐 Dynamically resolve the backend URL from Vercel's environment variables, falling back to localhost for local development
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000";
+
 export default function Home() {
   // Auth state
   const [user, setUser] = useState(null);
@@ -31,7 +34,7 @@ export default function Home() {
 
   const fetchGlobalRoutes = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/routes");
+      const response = await fetch(`${API_BASE_URL}/api/routes`);
       const data = await response.json();
       setRoutes(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -45,17 +48,14 @@ export default function Home() {
     const endpoint = authMode === "login" ? "login" : "signup";
 
     try {
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/auth/${endpoint}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: usernameInput,
-            password: passwordInput,
-          }),
-        },
-      );
+      const response = await fetch(`${API_BASE_URL}/api/auth/${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: usernameInput,
+          password: passwordInput,
+        }),
+      });
       const data = await response.json();
 
       if (!response.ok) throw new Error(data.error || "Authentication failed");
@@ -79,7 +79,6 @@ export default function Home() {
   };
 
   const handleDeleteRoute = async (routeId) => {
-    // Catch undefined or null IDs before they hit the network
     if (!routeId) {
       alert(
         "Frontend Error: Cannot delete track because routeId is undefined or missing.",
@@ -98,16 +97,13 @@ export default function Home() {
     try {
       console.log("Dispatching DELETE request for ID:", routeId);
 
-      const response = await fetch(
-        `http://127.0.0.1:5000/api/routes/${routeId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user?.token || ""}`,
-          },
+      const response = await fetch(`${API_BASE_URL}/api/routes/${routeId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token || ""}`,
         },
-      );
+      });
 
       const data = await response.json().catch(() => ({}));
 
@@ -130,7 +126,7 @@ export default function Home() {
     if (!routeName.trim() || !milestones.trim()) return;
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/routes", {
+      const response = await fetch(`${API_BASE_URL}/api/routes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -142,8 +138,6 @@ export default function Home() {
       if (!response.ok) throw new Error("Processing error");
       const resData = await response.json();
 
-      // FIX 1: Safely unpack nested payloads and fallback to raw item
-      // ensuring string ID flattening alignment matching MongoDB patterns
       const freshRoute = resData.route || resData.data || resData;
 
       if (freshRoute && freshRoute._id) {
@@ -155,14 +149,14 @@ export default function Home() {
           "Missing expected _id property on the saved route structure.",
           resData,
         );
-        fetchGlobalRoutes(); // Fallback query to sync backend
+        fetchGlobalRoutes();
       }
     } catch (error) {
       alert("Session expired or database error. Please log in again.");
     }
   };
 
-  // ADVANCED FILTER ENGINE (Defensive formatting logic)
+  // ADVANCED FILTER ENGINE
   const filteredRoutes = routes.filter((route) => {
     if (!route) return false;
     const matchesFilterMode =
@@ -422,7 +416,6 @@ export default function Home() {
                     </h3>
 
                     <div className="flex flex-wrap gap-1 mt-2">
-                      {/* FIX 2: Regex string splitter matching both "->" and " -> " configurations cleanly */}
                       {route.path &&
                         route.path.split(/\s*->\s*/).map((node, i) => (
                           <span
