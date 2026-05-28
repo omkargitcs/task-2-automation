@@ -51,10 +51,7 @@ startServer();
 // ==========================================
 // TELEGRAM BOT BACKEND DAEMON WORKER (TASK 2)
 // ==========================================
-import { Telegraf } from "telegraf";
-import dotenv from "dotenv";
-
-dotenv.config();
+const { Telegraf } = require("telegraf");
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
