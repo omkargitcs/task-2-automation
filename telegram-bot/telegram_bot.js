@@ -1,6 +1,16 @@
 import { Telegraf } from "telegraf";
+import dotenv from "dotenv";
+dotenv.config();
 
-const BOT_TOKEN = "8927265644:AAFatQEL6Rv4xgQfKG2C_AI3gswf91Uh9D8";
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+
+if (!BOT_TOKEN) {
+  console.error(
+    "CRITICAL ERROR: TELEGRAM_BOT_TOKEN environment variable is missing!",
+  );
+  process.exit(1);
+}
+
 const bot = new Telegraf(BOT_TOKEN);
 
 let todoList = [];
