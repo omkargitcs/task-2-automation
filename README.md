@@ -1,4 +1,4 @@
-# Multi-Service Automation & Transit Portfolio (Task 2)
+# Multi-Service Automation (Task 2)
 
 A robust, multi-service automation ecosystem combining an advanced geospatial web application, an automated real-time data ingestion pipeline, and an asynchronous chat automation engine. Built using a resource-optimized architecture, this repository showcases full-stack engineering, secure environment decoupling, and cloud deployment practices.
 
